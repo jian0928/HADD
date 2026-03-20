@@ -1,0 +1,39 @@
+# Dataset
+dataset: human36m
+data_path: ./data/processed/human36m
+seq_len: 243  # Input frame length N
+num_joints: 17  # 17 core joints
+num_bones: 16  # 16 bone segments (J-1)
+skeleton_hierarchy: 6  # 6 skeletal hierarchies
+
+# Diffusion
+diffusion_steps: 1000  # T=1000
+noise_schedule: cosine  # Cosine noise schedule
+sampler: ddim  # DDIM sampler for inference
+num_hypotheses: 5  # H=5 (lightweight) / 20 (high-precision)
+num_iterations: 1  # Z=1 (lightweight) /10 (high-precision)
+
+# HSTD Module
+hidden_dim: 512
+num_heads: 8  # Multi-head attention
+num_hstd_layers: 3  # Alternate HSDM/HTDM for 3 loops
+ffn_dim: 2048
+dropout: 0.1
+hier_emb_dim: 128  # Hierarchical spatial/temporal embedding dim
+
+# Training
+epochs: 300
+batch_size: 8
+gradient_accumulation: 4  # Effective batch size=32
+lr: 1e-4
+weight_decay: 1e-5
+warmup_epochs: 10
+optimizer: adamw
+lr_scheduler: cosine_annealing
+mixed_precision: true  # FP16 training
+gradient_clip: 1.0
+
+# Testing
+eval_metrics: [mpjpe, p_mpjpe, pck, auc]
+pck_threshold: 100  # mm
+auc_threshold: 200  # mm
